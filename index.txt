@@ -302,16 +302,16 @@ China generates the least (~217,640 tonnes).</li>
             <h2>3. Key Findings & Conclusion</h2>
 
             <h3>Geographic Concentration</h3>
-            <p>China, Bangladesh, and India bear most of the production-related environmental burden while wealthier consuming nations benefit economically.</p>
+            <p>Fast fashion production contributes heavily to CO₂ levels regardless of country; emissions remain uniformly high.Water consumption is massive globally, with developed countries consuming slightly more.Production and environmental impact are not always proportional — high production does not always mean highest pollution.</p>
 
             <h3>Worsening Environmental Trends</h3>
-            <p>Emissions and water usage increased faster than production, indicating declining per-unit efficiency. The 2020 pandemic caused a temporary dip but no sustained improvement.</p>
+            <p>Production remains consistently high with periodic surges, carbon emissions show no real decline due to production growth, water usage stays extremely high without improvement, and landfill waste persists at high levels due to low recycling adoption.</p>
 
             <h3>The Sustainability Gap</h3>
-            <p>Production surged ~50% while recycling improved only marginally. Current infrastructure cannot keep pace with production growth.</p>
+            <p>The System is Overwhelmed by the Scale of Production: A massive and growing gap exists between the volume of new products being made (in tens of thousands of tonnes) and the rate of recycling (a percentage of that total). This visually demonstrates that the core problem is the linear "take-make-waste" model of overproduction.</p>
 
             <h3>Brand Variation & Economic Links</h3>
-            <p>Brands differ substantially: some deliver similar production with much lower environmental footprints. Lower wages tend to accompany higher pollution, but higher price does not ensure sustainability.</p>
+            <p>Legacy brands like H&M, Forever 21, and Zara generate the highest carbon emissions, water usage, and landfill waste, while Shein ranks lower but still high overall, and despite slightly higher wages across brands, the industry uniformly depends on low-cost labor.</p>
 
       
             <div class="nav-buttons">
@@ -402,5 +402,6 @@ China generates the least (~217,640 tonnes).</li>
     </script>
 </body>
 </html>
+
 
 
