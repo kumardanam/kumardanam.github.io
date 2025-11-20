@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Fast Fashion Environmental Impact Analysis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f4f4f4;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 28px 16px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        header h1 { font-size: 1.9rem; margin-bottom: 6px; }
+        header p { opacity: 0.9; font-size: 0.95rem; }
+
+        /* Nav */
+        nav {
+            background: #34495e;
+            padding: 10px 0;
+            position: fixed;
+            top: 140px;
+            width: 100%;
+            z-index: 999;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        nav ul { list-style: none; text-align: center; }
+        nav ul li { display: inline-block; margin: 0 12px; }
+        nav a {
+            color: #fff; text-decoration: none; font-weight: 700;
+            padding: 8px 14px; border-radius: 6px; display:inline-block;
+            transition: background .2s, transform .12s;
+        }
+        nav a:hover, nav a.active { background: #3498db; transform: translateY(-1px); }
+
+        /* Progress indicator */
+        .progress-indicator {
+            position: fixed; bottom: 22px; right: 22px; background: #34495e; color: #fff;
+            padding: 12px 16px; border-radius: 28px; font-weight: 700; z-index: 998;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        /* Page container */
+        .page-container { margin-top: 170px; min-height: 100vh; padding-bottom: 60px; }
+
+        .page {
+            display: none;
+            max-width: 1100px;
+            margin: 0 auto 40px;
+            padding: 32px 26px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            min-height: calc(100vh - 260px);
+            animation: fadeIn .45s ease;
+        }
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #2c3e50; font-size: 1.6rem;
+            margin-bottom: 18px; border-left: 5px solid #3498db; padding-left: 12px;
+        }
+        h3 { color: #34495e; font-size: 1.1rem; margin: 18px 0 10px; }
+        p, li { margin-bottom: 12px; font-size: 0.98rem; }
+
+        .info-box {
+            background: #e8f4f8; border-left: 4px solid #3498db; padding: 14px; margin: 14px 0; border-radius: 6px;
+        }
+
+        /* Viz section */
+        .viz-section { margin: 20px 0; padding: 18px; background: #fafafa; border-radius: 8px; border: 1px solid #eee; }
+        .viz-image { width: 100%; height: auto; margin: 14px 0; border-radius: 6px; border: 1px solid #ddd; box-shadow: 0 6px 18px rgba(0,0,0,0.04); transition: transform .18s, box-shadow .18s; cursor: default; }
+        .viz-image:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+
+        /* Navigation buttons */
+        .nav-buttons { display:flex; justify-content: space-between; margin-top: 28px; padding-top: 18px; border-top: 1px solid #eee; }
+        .btn {
+            padding: 12px 26px; background: #3498db; color: #fff; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: 700; transition: background .18s, transform .12s;
+        }
+        .btn:hover { background: #2b86c3; transform: translateY(-2px); }
+        .btn:disabled { background: #95a5a6; cursor: not-allowed; transform: none; }
+
+        /* Team */
+        .team-info { display:flex; gap: 18px; justify-content: space-around; margin-top: 20px; flex-wrap: wrap; }
+        .team-member { background: #f9f9f9; padding: 18px; border-radius: 8px; text-align:center; width: 220px; border:1px solid #eee; }
+        .team-member h4 { margin-bottom: 8px; color: #2c3e50; }
+
+        footer { background: #2c3e50; color: #fff; padding: 18px 10px; text-align:center; margin-top: 26px; border-radius: 6px; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            nav { top: 90px; }
+            header h1 { font-size: 1.3rem; }
+            .page { margin: 16px; padding: 22px; min-height: auto; }
+            .team-info { flex-direction: column; align-items: center; }
+            .progress-indicator { bottom: 12px; right: 12px; padding: 10px 12px; font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>The Hidden Cost of Fast Fashion</h1>
+        <p>CSCE 5320 Data Visualization Project</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" onclick="showPage(0)" class="nav-link active">Introduction</a></li>
+            <li><a href="#" onclick="showPage(1)" class="nav-link">Visualizations Part 1</a></li>
+            <li><a href="#" onclick="showPage(2)" class="nav-link">Visualizations Part 2</a></li>
+            <li><a href="#" onclick="showPage(3)" class="nav-link">Findings & Conclusion</a></li>
+            <li><a href="#" onclick="showPage(4)" class="nav-link">Team</a></li>
+        </ul>
+    </nav>
+
+    <div class="progress-indicator" id="progressIndicator">Page 1 of 5</div>
+
+    <div class="page-container">
+        <!-- PAGE 0: INTRODUCTION -->
+        <div class="page active" id="page0">
+            <h2>1. Introduction</h2>
+            <p>This project examines the environmental impact of the fast fashion industry from 2010 to 2024. We analyze production volumes, carbon emissions, water usage, and textile waste across multiple brands and manufacturing countries to answer key research questions.</p>
+
+            <h3>Target Audience</h3>
+            <ul>
+                <li><strong>Consumers</strong> — Understand environmental cost of clothing choices</li>
+                <li><strong>Policymakers</strong> — Evidence for regulations</li>
+                <li><strong>Environmental Advocates</strong> — Data for campaigns</li>
+            </ul>
+
+            <h3>Research Questions</h3>
+            <div class="info-box">
+                <ol>
+                    <li>Which countries contribute most to the environmental footprint?</li>
+                    <li>How have production and emissions changed from 2010–2024?</li>
+                    <li>How do brands compare on environmental metrics?</li>
+                    <li>What is the relationship between production volume and waste generation?</li>
+                </ol>
+            </div>
+
+           
+            <div class="nav-buttons">
+                <button class="btn" disabled>Previous</button>
+                <button class="btn" onclick="showPage(1)">Next: Visualizations →</button>
+            </div>
+        </div>
+
+        <!-- PAGE 1: VISUALIZATIONS PART 1 (Viz 1-3) -->
+        <div class="page" id="page1">
+            <h2>2. Visualizations (Part 1)</h2>
+
+            <!-- Viz 1 -->
+            <div class="viz-section">
+                <h3>Visualization 1 — Global Impact by Country</h3>
+                <p><strong>Function:</strong> create_country_impact_charts()</p>
+                <p><strong>Description:</strong> Four bar charts comparing carbon emissions, water usage, landfill waste, and production volume across manufacturing countries.</p>
+
+                <!-- Replace filenames below with your actual PNG names. Examples included. -->
+                <!-- If you store images in an "images/" folder, use src="images/viz1_country_impact.png" -->
+                <img src="viz1_country_impact.png" alt="Country Impact Charts" class="viz-image" onerror="this.style.display='none'">
+                <img src="viz1_country_impact.png" alt="Country Impact Charts (images/)" class="viz-image" style="display:none;" onerror="this.style.display='none'">
+
+                <div class="info-box">
+                    <strong>Key Findings:</strong>
+                    <ul>
+                        <li>China, Bangladesh, and India account for the majority of environmental impacts.</li>
+                        <li>China contributes ~35–40% of total carbon emissions in the dataset.</li>
+                        <li>Bangladesh exhibits high water usage relative to production volume.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Viz 2 -->
+            <div class="viz-section">
+                <h3>Visualization 2 — Trends Over Time (2010–2024)</h3>
+                <p><strong>Function:</strong> create_temporal_trends()</p>
+                <p><strong>Description:</strong> Line charts showing production, emissions, water use, and waste across years.</p>
+
+                <img src="viz2_trends_over_time.png" alt="Trends Over Time" class="viz-image" onerror="this.style.display='none'">
+                <img src="viz2_trends_over_time.png" alt="Trends Over Time (images/)" class="viz-image" style="display:none;" onerror="this.style.display='none'">
+
+                <div class="info-box">
+                    <strong>Key Findings:</strong>
+                    <ul>
+                        <li>Production increased ≈50% from 2010 to 2024; emissions grew ~55–60%.</li>
+                        <li>2020 saw a dip (COVID-19), followed by rapid recovery to previous levels.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Viz 3 -->
+            <div class="viz-section">
+                <h3>Visualization 3 — Brand Environmental Comparison</h3>
+                <p><strong>Function:</strong> compare_brand_impacts()</p>
+                <p><strong>Description:</strong> Horizontal bar charts comparing brands on emissions, water, waste, and wages.</p>
+
+                <img src="viz3_brand_comparison.png" alt="Brand Comparison" class="viz-image" onerror="this.style.display='none'">
+                <img src="viz3_brand_comparison.png" alt="Brand Comparison (images/)" class="viz-image" style="display:none;" onerror="this.style.display='none'">
+
+                <div class="info-box">
+                    <strong>Key Findings:</strong>
+                    <ul>
+                        <li>Shein and similar fast-fashion brands show higher emissions per production unit.</li>
+                        <li>Brands with better wages often show reduced pollution, indicating a link between labor conditions and environmental practices.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn" onclick="showPage(0)">← Previous</button>
+                <button class="btn" onclick="showPage(2)">Next: More Visualizations →</button>
+            </div>
+        </div>
+
+        <!-- PAGE 2: VISUALIZATIONS PART 2 (Viz 4-6) -->
+        <div class="page" id="page2">
+            <h2>2. Visualizations (Part 2)</h2>
+
+            <!-- Viz 4 -->
+            <div class="viz-section">
+                <h3>Visualization 4 — Correlation Analysis</h3>
+                <p><strong>Function:</strong> create_correlation_matrix()</p>
+                <p><strong>Description:</strong> Heatmap of correlation coefficients among numeric variables (production, emissions, water, waste, wages, price).</p>
+
+                <img src="viz4_correlation_heatmap.png" alt="Correlation Heatmap" class="viz-image" onerror="this.style.display='none'">
+                <img src="viz4_correlation_heatmap.png" alt="Correlation Heatmap (images/)" class="viz-image" style="display:none;" onerror="this.style.display='none'">
+
+                <div class="info-box">
+                    <strong>Key Findings:</strong>
+                    <ul>
+                        <li>Production and emissions strongly correlated (r ≈ 0.92).</li>
+                        <li>Worker wages negatively correlate with pollution (r ≈ -0.35).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Viz 5 -->
+            <div class="viz-section">
+                <h3>Visualization 5 — Price vs Environmental Impact</h3>
+                <p><strong>Function:</strong> analyze_price_impact_relationship()</p>
+                <p><strong>Description:</strong> Scatter plots of item price vs emissions, water use, and waste (colored by year).</p>
+
+                <img src="viz5_price_vs_impact.png" alt="Price vs Impact" class="viz-image" onerror="this.style.display='none'">
+                <img src="viz5_price_vs_impact.png" alt="Price vs Impact (images/)" class="viz-image" style="display:none;" onerror="this.style.display='none'">
+
+                <div class="info-box">
+                    <strong>Key Findings:</strong>
+                    <ul>
+                        <li>Lower-priced items (under $15) show higher average emissions.</li>
+                        <li>Price explains only a small portion (~15%) of environmental variation.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Viz 6 -->
+            <div class="viz-section">
+                <h3>Visualization 6 — The Sustainability Gap</h3>
+                <p><strong>Function:</strong> visualize_sustainability_gap()</p>
+                <p><strong>Description:</strong> Dual-axis chart showing production volume (bars) vs recycling rate (line) over time to highlight the gap.</p>
+
+                <img src="viz6_sustainability_gap.png" alt="Sustainability Gap" class="viz-image" onerror="this.style.display='none'">
+                <img src="viz6_sustainability_gap.png" alt="Sustainability Gap (images/)" class="viz-image" style="display:none;" onerror="this.style.display='none'">
+
+                <div class="info-box">
+                    <strong>Key Findings:</strong>
+                    <ul>
+                        <li>Production +50% vs recycling +3–4%: the sustainability gap widens.</li>
+                        <li>Estimated recycling capacity handles ~38% of production.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn" onclick="showPage(1)">← Previous</button>
+                <button class="btn" onclick="showPage(3)">Next: Findings & Conclusion →</button>
+            </div>
+        </div>
+
+        <!-- PAGE 3: FINDINGS & CONCLUSION -->
+        <div class="page" id="page3">
+            <h2>3. Key Findings & Conclusion</h2>
+
+            <h3>Geographic Concentration</h3>
+            <p>China, Bangladesh, and India bear most of the production-related environmental burden while wealthier consuming nations benefit economically.</p>
+
+            <h3>Worsening Environmental Trends</h3>
+            <p>Emissions and water usage increased faster than production, indicating declining per-unit efficiency. The 2020 pandemic caused a temporary dip but no sustained improvement.</p>
+
+            <h3>The Sustainability Gap</h3>
+            <p>Production surged ~50% while recycling improved only marginally. Current infrastructure cannot keep pace with production growth.</p>
+
+            <h3>Brand Variation & Economic Links</h3>
+            <p>Brands differ substantially: some deliver similar production with much lower environmental footprints. Lower wages tend to accompany higher pollution, but higher price does not ensure sustainability.</p>
+
+      
+            <div class="nav-buttons">
+                <button class="btn" onclick="showPage(2)">← Previous</button>
+                <button class="btn" onclick="showPage(4)">Next: Team →</button>
+            </div>
+        </div>
+
+        <!-- PAGE 4: TEAM -->
+        <div class="page" id="page4">
+            <h2>4. Team & Sources</h2>
+
+            <div class="team-info">
+                <div class="team-member">
+                    <h4>Kumar Danam</h4>
+                    <p>Visualization Design & Data Integration</p>
+                </div>
+                <div class="team-member">
+                    <h4>Ankit Goud</h4>
+                    <p>Data Collection & Cleaning</p>
+                </div>
+                <div class="team-member">
+                    <h4>Vydeesh Mamuduru</h4>
+                    <p>Research & Documentation</p>
+                </div>
+            </div>
+
+            <div style="margin-top:28px; text-align:center;">
+                <h3>Data Sources</h3>
+                <ul style="list-style:none; margin-top:12px;">
+                    
+                    <li>Kaggle: Fast Fashion Dataset</li>
+                
+                </ul>
+            </div>
+
+            <div style="margin-top:28px; background:#e8f4f8; padding:20px; border-radius:8px; text-align:center;">
+                <h3>Thank You</h3>
+                <p>CSCE 5320 — Data Visualization<br/></p>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn" onclick="showPage(3)">← Previous</button>
+                <button class="btn" onclick="showPage(0)">Back to Start</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>CSCE 5320 — The Hidden Cost of Fast Fashion</strong></p>
+  
+    </footer>
+
+    <script>
+        let currentPage = 0;
+        const totalPages = 5;
+
+        function showPage(pageNum) {
+            // hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // show target
+            const el = document.getElementById('page' + pageNum);
+            if (!el) return;
+            el.classList.add('active');
+
+            // nav links active class
+            document.querySelectorAll('.nav-link').forEach((link, idx) => {
+                if (idx === pageNum) link.classList.add('active');
+                else link.classList.remove('active');
+            });
+
+            // update progress indicator
+            document.getElementById('progressIndicator').textContent = `Page ${pageNum + 1} of ${totalPages}`;
+
+            // scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            currentPage = pageNum;
+        }
+
+        // keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' && currentPage < totalPages - 1) showPage(currentPage + 1);
+            else if (e.key === 'ArrowLeft' && currentPage > 0) showPage(currentPage - 1);
+        });
+
+        // initial page setup
+        showPage(0);
+    </script>
+</body>
+</html>
