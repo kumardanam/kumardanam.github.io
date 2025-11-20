@@ -183,7 +183,7 @@
                 <div class="info-box">
                     <strong>Key Findings:</strong>
                     <ul>
-                        <li>China, Bangladesh, and India account for the majority of environmental impacts.</li>
+                        <li>India,US,UK account for the majority of environmental impacts.</li>
                         <li>China contributes ~35–40% of total carbon emissions in the dataset.</li>
                         <li>Bangladesh exhibits high water usage relative to production volume.</li>
                     </ul>
@@ -401,3 +401,4 @@
     </script>
 </body>
 </html>
+
